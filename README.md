@@ -96,3 +96,19 @@ Tambahkan nama panggilan Anda pada title app sebagai identitas hasil pekerjaan A
         appBar: AppBar(
             title: const Text('Arya Wicaksana Hidayat'),
         ),
+
+**Soal 2**
+
+Carilah judul buku favorit Anda di Google Books, lalu ganti ID buku pada variabel path di kode tersebut. Caranya ambil di URL browser Anda seperti gambar berikut ini.
+
+![screenshot](docs/Praktikum%201/SS_ContohSoal2.png)
+
+Kemudian cobalah akses di browser URI tersebut dengan lengkap seperti ini. Jika menampilkan data JSON, maka Anda telah berhasil. Lakukan capture milik Anda dan tulis di README pada laporan praktikum. Lalu lakukan commit dengan pesan "W12: Soal 2".
+
+![screenshot](docs/Praktikum%201/SS_ContohSoal22.png)
+
+answer :
+
+![screenshot](docs/Praktikum%201/SS_Soal2.png)
+
+![screenshot](docs/Praktikum%201/SS_Soal22.png)
