@@ -1,3 +1,6 @@
+# Nama : Arya Wicaksana Hidayat
+# Kelas : TI-3F
+# Absen/NIM : 07/2141720207
 # Praktikum 1: Mengunduh Data dari Web Service (API)
 
 **Langkah 1: Buat Project Baru**
@@ -66,7 +69,20 @@ Ketiklah kode seperti berikut ini.
         body: Center(
             child: Column(children: [
             const Spacer(),
-            ElevatedButton(onPressed: () {}, child: const Text('GO!')),
+            ElevatedButton(
+                child: const Text('GO!'),
+                onPressed: () {
+                    setState(() {});
+                    getData().then((value) {
+                    result = value.body.toString().substring(0, 450);
+                    setState(() {});
+                    }).catchError((_) {
+                    result = 'An error occurred';
+                    setState(() {});
+                    });
+                }),
+            const Spacer(),
+            Text(result),
             const Spacer(),
             const CircularProgressIndicator(),
             const Spacer(),
@@ -149,3 +165,72 @@ Lakukan run aplikasi Flutter Anda. Anda akan melihat tampilan akhir seperti gamb
 answer :
 
 substring() mengambil substring dari string. Substring adalah bagian string yang dimulai dari indeks tertentu dan berakhir pada indeks tertentu. Metode ini menerima dua parameter, indeks awal dan indeks akhir. Indeks awal adalah indeks karakter pertama yang ingin diambil, dan indeks akhir adalah indeks karakter terakhir yang ingin diambil. Metode catchError() menangani kesalahan dan menerima satu parameter, yaitu fungsi yang akan dijalankan jika terjadi kesalahan. Parameter tersebut adalah objek kesalahan. substring() digunakan oleh kode di atas untuk mengambil 450 karakter pertama dari respons API. Jika terjadi kesalahan saat mengambil respons API, kode tersebut akan menggunakan catchError() untuk menampilkan pesan kesalahan dengan judul "An error occurred"
+
+# Praktikum 2: Menggunakan await/async untuk menghindari callbacks
+
+**Langkah 1: Buka file main.dart**
+
+Tambahkan tiga method berisi kode seperti berikut di dalam class _FuturePageState.
+
+    Future<int> returnOneAsync() async {
+    await Future.delayed(const Duration(seconds: 3));
+    return 1;
+    }
+
+    Future<int> returnTwoAsync() async {
+    await Future.delayed(const Duration(seconds: 3));
+    return 2;
+    }
+
+    Future<int> returnThreeAsync() async {
+    await Future.delayed(const Duration(seconds: 3));
+    return 3;
+    }
+
+**Langkah 2: Tambah method count()**
+
+Lalu tambahkan lagi method ini di bawah ketiga method sebelumnya.
+
+    Future count() async {
+        int total = 0;
+        total = await returnOneAsync();
+        total += await returnTwoAsync();
+        total += await returnThreeAsync();
+        setState(() {
+        result = total.toString();
+        });
+    }
+    }
+
+**Langkah 3: Panggil count()**
+
+Lakukan comment kode sebelumnya, ubah isi kode onPressed() menjadi seperti berikut.
+
+    ElevatedButton(
+              child: const Text('GO!'),
+              onPressed: () {
+                count();
+              }),
+
+**Langkah 4: Run**
+
+Akhirnya, run atau tekan F5 jika aplikasi belum running. Maka Anda akan melihat seperti gambar berikut, hasil angka 6 akan tampil setelah delay 9 detik.
+
+![screenshot pc](docs/Praktikum%202/screenshot_pc.png)
+![gif hape](docs/Praktikum%202/gif_hape.gif)
+
+**Soal 4**
+
+- Jelaskan maksud kode langkah 1 dan 2 tersebut!
+
+- Capture hasil praktikum Anda berupa GIF dan lampirkan di README. Lalu lakukan commit dengan pesan "W12: Soal 4".
+
+answer :
+
+Langkah 1 dari kode di atas adalah kode Dart yang memiliki tiga fungsi return Async: returnOneAsync(), returnTwoAsync(), dan returnThreeAsync(). Nilai int dikembalikan oleh ketiga fungsi ini, dan Future.delayed() menunda eksekusi selama tiga detik. Masing-masing fungsi dijelaskan di sini:
+
+- returnOneAsync() Fungsi ini mengembalikan nilai 1 setelah 3 detik.
+- returnTwoAsync() Fungsi ini mengembalikan nilai 2 setelah 3 detik.
+- returnThreeAsync() Fungsi ini mengembalikan nilai 3 setelah 3 detik.
+
+Dalam langkah kedua dari kode di atas, fungsi asynchronous count() digunakan untuk menghitung jumlah dari tiga fungsi asynchronous lainnya: returnOneAsync(), returnTwoAsync(), dan returnThreeAsync(). Dengan menggunakan fungsi count(), yang mengembalikan Future, eksekusinya tidak akan memblokir kode lainnya.
