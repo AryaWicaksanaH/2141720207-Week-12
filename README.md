@@ -367,3 +367,61 @@ Anda akan melihat hasilnya dalam 3 detik berupa angka 6 lebih cepat dibandingkan
 **Soal 7**
 
 Capture hasil praktikum Anda berupa GIF dan lampirkan di README. Lalu lakukan commit dengan pesan "W12: Soal 7".
+
+**Langkah 4: Ganti variabel futureGroup**
+
+Anda dapat menggunakan FutureGroup dengan Future.wait seperti kode berikut.
+
+    final futures = Future.wait<int>([
+    returnOneAsync(),
+    returnTwoAsync(),
+    returnThreeAsync(),
+    ]);
+
+**Soal 8**
+
+Jelaskan maksud perbedaan kode langkah 1 dan 4!
+
+answer :
+
+pada penggunaan variabel futureGroup. Pada langkah pertama, variabel futureGroup disimpan, yang merupakan objek yang dapat digunakan untuk mengelompokkan beberapa Future bersama-sama. Pada langkah keempat, variabel futureGroup digantikan oleh Future.wait(), yang merupakan fungsi yang dapat digunakan untuk menunggu beberapa Future selesai dijalankan.
+
+# Praktikum 5: Menangani Respon Error pada Async Code
+
+**Langkah 1: Buka file main.dart**
+
+Tambahkan method ini ke dalam class _FuturePageState
+
+    Future returnError() async {
+        await Future.delayed(const Duration(seconds: 2));
+        throw Exception('Something terrible happened!');
+    }
+
+**Langkah 2: ElevatedButton**
+
+Ganti dengan kode berikut
+
+    ElevatedButton(
+                child: const Text('GO!'),
+                onPressed: () {
+                    returnError().then((value) {
+                    setState(() {
+                        result = 'Success';
+                    });
+                    }).catchError((onError) {
+                    setState(() {
+                        result = onError.toString();
+                    });
+                    }).whenComplete(() => print('complete'));
+                }),
+
+**Langkah 3: Run**
+
+Lakukan run dan klik tombol GO! maka akan menghasilkan seperti gambar berikut.
+
+![screenshot pc](docs/Praktikum%205/screenshot_pc.png)
+![gif hape](docs/Praktikum%205/gif_hape.gif)
+
+**Soal 9**
+
+Capture hasil praktikum Anda berupa GIF dan lampirkan di README. Lalu lakukan commit dengan pesan "W12: Soal 9".
