@@ -91,13 +91,13 @@ Ketiklah kode seperti berikut ini.
         );
     }
 
-  Future<Response> getData() async {
-    const authority = 'www.googleapis.com';
-    const path = '/books/v1/volumes/junbDwAAQBAJ';
-    Uri url = Uri.https(authority, path);
-    return http.get(url);
-  }
-}
+    Future<Response> getData() async {
+        const authority = 'www.googleapis.com';
+        const path = '/books/v1/volumes/junbDwAAQBAJ';
+        Uri url = Uri.https(authority, path);
+        return http.get(url);
+    }
+    }
 
 
 **Langkah 4: Tambah method getData()**
