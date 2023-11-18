@@ -234,3 +234,57 @@ Langkah 1 dari kode di atas adalah kode Dart yang memiliki tiga fungsi return As
 - returnThreeAsync() Fungsi ini mengembalikan nilai 3 setelah 3 detik.
 
 Dalam langkah kedua dari kode di atas, fungsi asynchronous count() digunakan untuk menghitung jumlah dari tiga fungsi asynchronous lainnya: returnOneAsync(), returnTwoAsync(), dan returnThreeAsync(). Dengan menggunakan fungsi count(), yang mengembalikan Future, eksekusinya tidak akan memblokir kode lainnya.
+
+# Praktikum 3: Menggunakan Completer di Future
+
+**Langkah 1: Buka main.dart**
+
+Pastikan telah impor package async berikut.
+
+    import 'package:async/async.dart';
+
+**Langkah 2: Tambahkan variabel dan method**
+
+Tambahkan variabel late dan method di class _FuturePageState seperti ini.
+
+    late Completer completer;
+
+    Future getNumber() {
+    completer = Completer<int>();
+    calculate();
+    return completer.future;
+    }
+
+    Future calculate() async {
+    await Future.delayed(const Duration(seconds : 5));
+    completer.complete(42);
+    }
+
+**Langkah 3: Ganti isi kode onPressed()**
+
+Tambahkan kode berikut pada fungsi onPressed(). Kode sebelumnya bisa Anda comment.
+
+    getNumber().then((value) {
+                    setState(() {
+                        result = value.toString();
+                    });
+                });
+
+**Langkah 4:**
+
+Terakhir, run atau tekan F5 untuk melihat hasilnya jika memang belum running. Bisa juga lakukan hot restart jika aplikasi sudah running. Maka hasilnya akan seperti gambar berikut ini. Setelah 5 detik, maka angka 42 akan tampil.
+
+![screenshot pc](docs/Praktikum%203/screenshot_pc.png)
+![gif hape](docs/Praktikum%203/gif_hape.gif)
+
+**Soal 5**
+
+- Jelaskan maksud kode langkah 2 tersebut!
+
+- Capture hasil praktikum Anda berupa GIF dan lampirkan di README. Lalu lakukan commit dengan pesan "W12: Soal 5".
+
+answer :
+
+- Variabel completer Variabel completer adalah variabel late dari tipe Completer. Variabel ini digunakan untuk menyimpan hasil dari perhitungan angka 42.
+- Method getNumber() Method getNumber() mengembalikan nilai dari variabel completer. Method ini memiliki dua langkah: a. Inisialisasi variabel completer dengan nilai baru. b. Memanggil method calculate() untuk menghitung angka 42.
+- Method calculate() Method calculate() menggunakan Future.delayed() untuk menunggu 5 detik sebelum menyelesaikan perhitungan angka 42. Setelah 5 detik, method ini akan memanggil method completer.complete() untuk menyelesaikan perhitungan dan mengembalikan nilai 42 ke variabel completer
