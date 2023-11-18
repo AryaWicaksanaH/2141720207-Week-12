@@ -23,6 +23,13 @@ class MyApp extends StatelessWidget {
   }
 }
 
+class FuturePage extends StatefulWidget {
+  const FuturePage({super.key});
+
+  @override
+  State<FuturePage> createState() => _FuturePageState();
+}
+
 class _FuturePageState extends State<FuturePage> {
   String result = '';
   @override
@@ -34,7 +41,18 @@ class _FuturePageState extends State<FuturePage> {
       body: Center(
         child: Column(children: [
           const Spacer(),
-          ElevatedButton(onPressed: () {}, child: const Text('GO!')),
+          ElevatedButton(
+              child: const Text('GO!'),
+              onPressed: () {
+                setState(() {});
+                getData().then((value) {
+                  result = value.body.toString().substring(0, 450);
+                  setState(() {});
+                }).catchError((_) {
+                  result = 'An error occurred';
+                  setState(() {});
+                });
+              }),
           const Spacer(),
           const CircularProgressIndicator(),
           const Spacer(),
@@ -45,7 +63,7 @@ class _FuturePageState extends State<FuturePage> {
 
   Future<Response> getData() async {
     const authority = 'www.googleapis.com';
-    const path = '/books/v1/volumes/junbDwAAQBAJ';
+    const path = '/books/v1/volumes/ZutsEAAAQBAJ';
     Uri url = Uri.https(authority, path);
     return http.get(url);
   }

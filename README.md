@@ -48,6 +48,13 @@ Ketiklah kode seperti berikut ini.
     }
     }
 
+    class FuturePage extends StatefulWidget {
+    const FuturePage({super.key});
+
+    @override
+    State<FuturePage> createState() => _FuturePageState();
+    }
+
     class _FuturePageState extends State<FuturePage> {
     String result = '';
     @override
@@ -112,3 +119,33 @@ answer :
 ![screenshot](docs/Praktikum%201/SS_Soal2.png)
 
 ![screenshot](docs/Praktikum%201/SS_Soal22.png)
+
+**Langkah 5: Tambah kode di ElevatedButton**
+
+Tambahkan kode pada onPressed di ElevatedButton seperti berikut.
+
+    ElevatedButton(
+                child: const Text('GO!'),
+                onPressed: () {
+                    setState(() {});
+                    getData().then((value) {
+                    result = value.body.toString().substring(0, 450);
+                    setState(() {});
+                    }).catchError((_) {
+                    result = 'An error occurred';
+                    setState(() {});
+
+Lakukan run aplikasi Flutter Anda. Anda akan melihat tampilan akhir seperti gambar berikut. Jika masih terdapat error, silakan diperbaiki hingga bisa running.
+
+![screenshot pc](docs/Praktikum%201/screenshot_pc.png)
+![gif hp](docs/Praktikum%201/gif_hape.gif)
+
+**Soal 3**
+
+- Jelaskan maksud kode langkah 5 tersebut terkait substring dan catchError!
+
+- Capture hasil praktikum Anda berupa GIF dan lampirkan di README. Lalu lakukan commit dengan pesan "W12: Soal 3".
+
+answer :
+
+substring() mengambil substring dari string. Substring adalah bagian string yang dimulai dari indeks tertentu dan berakhir pada indeks tertentu. Metode ini menerima dua parameter, indeks awal dan indeks akhir. Indeks awal adalah indeks karakter pertama yang ingin diambil, dan indeks akhir adalah indeks karakter terakhir yang ingin diambil. Metode catchError() menangani kesalahan dan menerima satu parameter, yaitu fungsi yang akan dijalankan jika terjadi kesalahan. Parameter tersebut adalah objek kesalahan. substring() digunakan oleh kode di atas untuk mengambil 450 karakter pertama dari respons API. Jika terjadi kesalahan saat mengambil respons API, kode tersebut akan menggunakan catchError() untuk menampilkan pesan kesalahan dengan judul "An error occurred"
