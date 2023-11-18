@@ -325,3 +325,45 @@ answer :
 langkah 5, kita mengganti isi dari method calculate(). Metode ini sebelumnya menggunakan await Future.delayed(const Duration(seconds: 5)); untuk menunggu 5 detik sebelum menyelesaikan perhitungan angka 42. Namun, metode ini tidak menangani kesalahan yang mungkin terjadi saat menunggu 5 detik. Sebaliknya, kode ini menggunakan try/catch untuk menangani kesalahan yang mungkin terjadi saat menunggu 5 detik. Jika tidak ada kesalahan, metode ini akan memanggil metode completer.complete() untuk menyelesaikan perhitungan dan mengembalikan nilai 42 ke variabel completer. Jika ada kesalahan, metode ini akan memanggil metode completer.completeError() untuk menyelesaikan perhitungan dan mengembalikan nilai {} ke variabel completer.
 
 langkah 6, kita mengganti kode di method onPressed(). Metode ini sebelumnya menangani hasil dari method getNumber dengan then(). Namun, metode ini tidak menangani kesalahan yang mungkin terjadi saat memanggil method getNumber. Sebaliknya, kode ini menangani hasil dari method getNumber dengan menggunakan then() dan catchError(). Jika tidak terjadi kesalahan, maka metode ini akan memanggil method setState() untuk memperbarui state widget dan menampilkan pesan kesalahan.
+
+# Praktikum 4: Memanggil Future secara paralel
+
+**Langkah 1: Buka file main.dart**
+
+Tambahkan method ini ke dalam class _FuturePageState
+
+    void returnFG() {
+        FutureGroup<int> futureGroup = FutureGroup<int>();
+        futureGroup.add(returnOneAsync());
+        futureGroup.add(returnTwoAsync());
+        futureGroup.add(returnThreeAsync());
+        futureGroup.close();
+        futureGroup.future.then((List<int> value) {
+        int total = 0;
+        for (var element in value) {
+            total += element;
+        }
+        setState(() {
+            result = total.toString();
+        });
+        });
+    }
+
+**Langkah 2: Edit onPressed()**
+
+Anda bisa hapus atau comment kode sebelumnya, kemudian panggil method dari langkah 1 tersebut.
+
+    onPressed: () {
+        returnFG();
+    }
+
+**Langkah 3: Run**
+
+Anda akan melihat hasilnya dalam 3 detik berupa angka 6 lebih cepat dibandingkan praktikum sebelumnya menunggu sampai 9 detik.
+
+![screenshot pc](docs/Praktikum%204/screenshot_pc.png)
+![gif hape](docs/Praktikum%204/gif_hape.gif)
+
+**Soal 7**
+
+Capture hasil praktikum Anda berupa GIF dan lampirkan di README. Lalu lakukan commit dengan pesan "W12: Soal 7".
