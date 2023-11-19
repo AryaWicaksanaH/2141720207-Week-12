@@ -425,3 +425,151 @@ Lakukan run dan klik tombol GO! maka akan menghasilkan seperti gambar berikut.
 **Soal 9**
 
 Capture hasil praktikum Anda berupa GIF dan lampirkan di README. Lalu lakukan commit dengan pesan "W12: Soal 9".
+
+**Langkah 4: Tambah method handleError()**
+
+Tambahkan kode ini di dalam class _FutureStatePage
+
+    Future handleError() async {
+        try {
+        await returnError();
+        } catch (error) {
+        setState(() {
+            result = error.toString();
+        });
+        } finally {
+        print('Complete');
+        }
+    }
+
+**Soal 10**
+
+Panggil method handleError() tersebut di ElevatedButton, lalu run. Apa hasilnya? Jelaskan perbedaan kode langkah 1 dan 4!
+
+answer :
+
+- Langkah 1, method returnError() tidak menangani error yang terjadi. Jika error terjadi, maka method tersebut akan berhenti dan tidak mengembalikan nilai apa pun.
+
+- Langkah 4, method handleError() menangani kesalahan dengan try-catch-finally. Method handleError() mencoba menjalankan method returnError() pada try block. Jika error terjadi, try block akan berhenti dan error akan ditangkap oleh catch block. Pada catch block, method handleError() menampilkan error ke layar menggunakan print(). Pada akhirnya, blok selalu dijalankan.
+
+# Praktikum 6: Menggunakan Future dengan StatefulWidget
+
+**Langkah 1: install plugin geolocator**
+
+Tambahkan plugin geolocator dengan mengetik perintah berikut di terminal.
+
+    flutter pub add geolocator
+
+**Langkah 2: Tambah permission GPS**
+
+Jika Anda menargetkan untuk platform Android, maka tambahkan baris kode berikut di file android/app/src/main/androidmanifest.xml
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+
+**Langkah 3: Buat file geolocation.dart**
+
+Tambahkan file baru ini di folder lib project Anda.
+
+**Langkah 4: Buat StatefulWidget**
+
+Buat class LocationScreen di dalam file geolocation.dart
+
+**Langkah 5: Isi kode geolocation.dart**
+
+    import 'dart:ffi';
+
+    import 'package:flutter/material.dart';
+    import 'package:geolocator/geolocator.dart';
+
+    class LocationScreen extends StatefulWidget {
+    const LocationScreen({super.key});
+
+    @override
+    State<LocationScreen> createState() => _LocationScreenState();
+    }
+
+    class _LocationScreenState extends State<LocationScreen> {
+    String myPosition = '';
+    @override
+    void initstate() {
+        super.initState();
+        getPosition().then((Position myPos) {
+        myPosition =
+            'Latitude: ${myPos.latitude.toString()} - Longitude: {myPos.longitude.toString()}';
+        setState(() {
+            myPosition = myPosition;
+        });
+        });
+    }
+
+    @override
+    Widget build(BuildContext context) {
+        return Scaffold(
+        appBar: AppBar(title: const Text('Current Location')),
+        body: Center(child: Text(myPosition)),
+        );
+    }
+
+    Future<Position> getPosition() async {
+        await Geolocator.requestPermission();
+        await Geolocator.isLocationServiceEnabled();
+        Position? position = await Geolocator.getCurrentPosition();
+        return position;
+    }
+    }
+
+**Soal 11**
+
+Tambahkan nama panggilan Anda pada tiap properti title sebagai identitas pekerjaan Anda.
+
+    appBar: AppBar(title: const Text('Current Location Arya')),
+
+**Langkah 6: Edit main.dart**
+
+Panggil screen baru tersebut di file main Anda seperti berikut.
+
+    home: const LocationScreen(),
+
+**Langkah 7: Run**
+
+Run project Anda di device atau emulator (bukan browser), maka akan tampil seperti berikut ini.
+
+**!!ATTENTION!!**
+
+well, jika kalian mengalami error seperti dibawah ini saat run :
+
+    nuget.exe not found, trying to download or use cached version.
+
+aku sarankan kalian download [NuGet](https://www.nuget.org/downloads) nya, gak perlu klik EXE-nya. cukup buat folder untuknya dimanapun dan taruh exe di dalam folder nya. Setelah itu, copy path-nya seperti Week awal2 pasang Dart
+
+![screenshot pc](docs/Praktikum%206/screenshot_pc.png)
+![gif hape](docs/Praktikum%206/ss_hp.jpeg)
+![gif hape](docs/Praktikum%206/ss_hp2.jpeg)
+
+**Langkah 8: Tambahkan animasi loading**
+
+Tambahkan widget loading seperti kode berikut. Lalu hot restart, perhatikan perubahannya.
+
+    @override
+    Widget build(BuildContext context) {
+        final myWidget =
+            myPosition == '' ? const CircularProgressIndicator() : Text(myPosition);
+
+        return Scaffold(
+        appBar: AppBar(title: const Text('Current Location')),
+        body: Center(child: myWidget),
+        );
+    }
+
+**Soal 12**
+
+- Jika Anda tidak melihat animasi loading tampil, kemungkinan itu berjalan sangat cepat. Tambahkan delay pada method getPosition() dengan kode await Future.delayed(const Duration(seconds: 3));
+
+answer : i saw the loading for 3 secs
+
+- Apakah Anda mendapatkan koordinat GPS ketika run di browser? Mengapa demikian?
+
+answer : Geolocator support untuk browser sehingga bisa mendapatkan koordinat lokasi sendiri
+
+- Capture hasil praktikum Anda berupa GIF dan lampirkan di README. Lalu lakukan commit dengan pesan "W12: Soal 12".
