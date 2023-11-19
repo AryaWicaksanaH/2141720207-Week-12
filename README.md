@@ -573,3 +573,69 @@ answer : i saw the loading for 3 secs
 answer : Geolocator support untuk browser sehingga bisa mendapatkan koordinat lokasi sendiri
 
 - Capture hasil praktikum Anda berupa GIF dan lampirkan di README. Lalu lakukan commit dengan pesan "W12: Soal 12".
+
+# Praktikum 7: Manajemen Future dengan FutureBuilder
+
+**Langkah 1: Modifikasi method getPosition()**
+
+Buka file geolocation.dart kemudian ganti isi method dengan kode ini.
+
+    Future<Position> getPosition() async {
+        await Geolocator.isLocationServiceEnabled();
+        Position position = await Geolocator.getCurrentPosition();
+        return position;
+    }
+
+**Langkah 2: Tambah variabel**
+
+Tambah variabel ini di class _LocationScreenState
+
+    @override
+    void initState() {
+        super.initState();
+        position = getPosition();
+    }
+
+**Langkah 4: Edit method build()**
+
+**!!ATTENTION!!**
+
+jika anda mengalami error 'position' undefined, tambahkan ini dibawah String myPosition 
+
+    Future<Position>? position;
+
+Ketik kode berikut dan sesuaikan. Kode lama bisa Anda comment atau hapus.
+
+    @override
+    Widget build(BuildContext context) {
+        return Scaffold(
+            appBar: AppBar(title: const Text('Current Location')),
+            body: Center(
+                child: FutureBuilder(
+                    future: position,
+                    builder:
+                        (BuildContext context, AsyncSnapshot<Position> snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const CircularProgressIndicator();
+                    } else if (snapshot.connectionState == ConnectionState.done) {
+                        return Text(snapshot.data.toString());
+                    } else {
+                        return const Text('');
+                    }
+                    })));
+    }
+
+![screenshot pc](docs/Praktikum%206/ss_hp.jpeg)
+![gif hape](docs/Praktikum%206/ss_hp2.jpeg)
+
+**Soal 13**
+
+- Apakah ada perbedaan UI dengan praktikum sebelumnya? Mengapa demikian?
+
+answer : menampilkan koordinat Geolokasi dengan layout yang sama. Hal ini terjadi karena keduanya mengambil lokasi pengguna secara langsung saat aplikasi dimulai.
+
+setState digunakan untuk memperbarui variabel state myPosition. Kedua, FutureBuilder digunakan untuk mengelola pembaruan UI secara otomatis. Namun pada akhirnya, hasil tampilan UI terlihat sama karena keduanya memiliki penundaan yang sama, yakni 3 detik.
+
+- Capture hasil praktikum Anda berupa GIF dan lampirkan di README. Lalu lakukan commit dengan pesan "W12: Soal 13".
+
+- Seperti yang Anda lihat, menggunakan FutureBuilder lebih efisien, clean, dan reactive dengan Future bersama UI.

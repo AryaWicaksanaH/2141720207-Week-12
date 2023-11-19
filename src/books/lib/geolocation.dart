@@ -12,16 +12,11 @@ class LocationScreen extends StatefulWidget {
 
 class _LocationScreenState extends State<LocationScreen> {
   String myPosition = '';
+  Future<Position>? position;
   @override
   void initState() {
     super.initState();
-    getPosition().then((Position myPos) {
-      myPosition =
-          'Latitude: ${myPos.latitude.toString()} - Longitude: ${myPos.longitude.toString()}';
-      setState(() {
-        myPosition = myPosition;
-      });
-    });
+    position = getPosition();
   }
 
   // @override
@@ -32,21 +27,29 @@ class _LocationScreenState extends State<LocationScreen> {
   //   );
   // }
 
-  Future<Position> getPosition() async {
-    await Geolocator.requestPermission();
-    await Geolocator.isLocationServiceEnabled();
-    Position? position = await Geolocator.getCurrentPosition();
-    return position;
-  }
-
   @override
   Widget build(BuildContext context) {
-    final myWidget =
-        myPosition == '' ? const CircularProgressIndicator() : Text(myPosition);
-
     return Scaffold(
-      appBar: AppBar(title: const Text('Current Location')),
-      body: Center(child: myWidget),
-    );
+        appBar: AppBar(title: const Text('Current Location')),
+        body: Center(
+            child: FutureBuilder(
+                future: position,
+                builder:
+                    (BuildContext context, AsyncSnapshot<Position> snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const CircularProgressIndicator();
+                  } else if (snapshot.connectionState == ConnectionState.done) {
+                    return Text(snapshot.data.toString());
+                  } else {
+                    return const Text('');
+                  }
+                })));
+  }
+
+  Future<Position> getPosition() async {
+    await Geolocator.isLocationServiceEnabled();
+    await Future.delayed(const Duration(seconds: 3));
+    Position position = await Geolocator.getCurrentPosition();
+    return position;
   }
 }
