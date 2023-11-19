@@ -639,3 +639,28 @@ setState digunakan untuk memperbarui variabel state myPosition. Kedua, FutureBui
 - Capture hasil praktikum Anda berupa GIF dan lampirkan di README. Lalu lakukan commit dengan pesan "W12: Soal 13".
 
 - Seperti yang Anda lihat, menggunakan FutureBuilder lebih efisien, clean, dan reactive dengan Future bersama UI.
+
+**Langkah 5: Tambah handling error**
+
+Tambahkan kode berikut untuk menangani ketika terjadi error. Kemudian hot restart.
+
+    else if (snapshot.connectionState == ConnectionState.done) {
+    if (snapshot.hasError) {
+        return Text('Something terrible happened!');
+    }
+    return Text(snapshot.data.toString());
+    }
+
+![hape](docs/Praktikum%206/ss_hp2.jpeg)
+
+**Soal 14**
+
+- Apakah ada perbedaan UI dengan langkah sebelumnya? Mengapa demikian?
+
+answer : tidak mengubah tampilan UI, karena langkah ini hanya menambahkan fungsi handleError() yang akan dijalankan jika terjadi kesalahan.
+
+- Capture hasil praktikum Anda berupa GIF dan lampirkan di README. Lalu lakukan commit dengan pesan "W12: Soal 14".
+
+it said null instead of *Something terrible happened!*
+
+![phone](docs/Praktikum%206/ss_hp3.jpeg)
